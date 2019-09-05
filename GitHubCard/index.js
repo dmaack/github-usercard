@@ -6,6 +6,12 @@ axios
 .get('https://api.github.com/users/dmaack')
   .then(response => {
     console.log(response);
+    // response.data.forEach(item => {
+    //   const newCard = createCard(item);
+    //   cards.appendChild(newCard);
+    // });
+    const newCard = createCard(response.data);
+    cards.appendChild(newCard);
   })
   .catch(error => {
     console.log('The data was not returned', error);
@@ -31,8 +37,19 @@ axios
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
-
+const followersArray = ['tetondan', 'dustinmyers', 'crsullivan', 'white-room', 'samwarfield'];
+  followersArray.forEach(userData => {
+    axios
+    .get('https://api.github.com/users/' + userData)
+      .then(response => {
+        console.log(response);
+        const newCard = createCard(response.data);
+        cards.appendChild(newCard);
+      })
+      .catch(error => {
+        console.log('The data was not returned' , error);
+      })
+  })
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
 
@@ -53,6 +70,49 @@ const followersArray = [];
 
 */
 
+const cards = document.querySelector('.cards');
+
+function createCard(githuData) {
+  const card = document.createElement('div');
+  const userImgUrl = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const userRealName = document.createElement('h3');
+  const userUserName = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const githubUrl = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
+
+  card.appendChild(userImgUrl);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(userRealName);
+  cardInfo.appendChild(userUserName);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(profile);
+  profile.appendChild(githubUrl);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(bio);
+
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  userRealName.classList.add('name');
+  userUserName.classList.add('username');
+
+  userImgUrl.src = githuData.avatar_url;
+  userRealName.textContent = githuData.name;
+  userUserName.textContent = githuData.login;
+  location.textContent = `Location: ${githuData.location}`;
+  profile.textContent = `Profile: ${githuData.html_url}`;
+  followers.textContent =  `Followers: ${githuData.followers}`;
+  following.textContent = `Following: ${githuData.following}`;
+  bio.textContent = `Bio: ${githuData.bio}`;
+
+  return card;
+}
+
 /* List of LS Instructors Github username's: 
   tetondan
   dustinmyers
@@ -60,3 +120,9 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+// location.textContent = 'Location: ' , gitData;
+// profile.textContent = 'Profile: ' , gitData;
+// followers.textContent = 'Followers: ' , gitData;
+// following.textContent = 'Following: ' , gitData;
+// bio.textContent = 'Bio: ' , gitData;
