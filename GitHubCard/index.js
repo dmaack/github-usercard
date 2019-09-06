@@ -6,12 +6,9 @@ axios
 .get('https://api.github.com/users/dmaack')
   .then(response => {
     console.log(response);
-    // response.data.forEach(item => {
-    //   const newCard = createCard(item);
-    //   cards.appendChild(newCard);
-    // });
     const newCard = createCard(response.data);
     cards.appendChild(newCard);
+  
   })
   .catch(error => {
     console.log('The data was not returned', error);
@@ -50,6 +47,7 @@ const followersArray = ['tetondan', 'dustinmyers', 'crsullivan', 'white-room', '
         console.log('The data was not returned' , error);
       })
   })
+
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
 
@@ -72,7 +70,7 @@ const followersArray = ['tetondan', 'dustinmyers', 'crsullivan', 'white-room', '
 
 const cards = document.querySelector('.cards');
 
-function createCard(githuData) {
+function createCard(githubData) {
   const card = document.createElement('div');
   const userImgUrl = document.createElement('img');
   const cardInfo = document.createElement('div');
@@ -85,6 +83,23 @@ function createCard(githuData) {
   const following = document.createElement('p');
   const bio = document.createElement('p');
 
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  userRealName.classList.add('name');
+  userUserName.classList.add('username');
+
+  userImgUrl.src = githubData.avatar_url;
+  userRealName.textContent = githubData.name;
+  userUserName.textContent = githubData.login;
+  location.textContent = `Location: ${githubData.location}`;
+  profile.textContent = `Profile: ${githubUrl}`;
+  githubUrl.href = githubData.html_url;
+  githubUrl.textContent = githubData.html_url;
+  
+  followers.textContent =  `Followers: ${githubData.followers}`;
+  following.textContent = `Following: ${githubData.following}`;
+  bio.textContent = `Bio: ${githubData.bio}`;
+
   card.appendChild(userImgUrl);
   card.appendChild(cardInfo);
   cardInfo.appendChild(userRealName);
@@ -96,19 +111,7 @@ function createCard(githuData) {
   cardInfo.appendChild(following);
   cardInfo.appendChild(bio);
 
-  card.classList.add('card');
-  cardInfo.classList.add('card-info');
-  userRealName.classList.add('name');
-  userUserName.classList.add('username');
-
-  userImgUrl.src = githuData.avatar_url;
-  userRealName.textContent = githuData.name;
-  userUserName.textContent = githuData.login;
-  location.textContent = `Location: ${githuData.location}`;
-  profile.textContent = `Profile: ${githuData.html_url}`;
-  followers.textContent =  `Followers: ${githuData.followers}`;
-  following.textContent = `Following: ${githuData.following}`;
-  bio.textContent = `Bio: ${githuData.bio}`;
+ 
 
   return card;
 }
